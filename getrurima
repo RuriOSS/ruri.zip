@@ -1,0 +1,193 @@
+#!/bin/bash
+# SPDX-License-Identifier: MIT
+#
+#
+# This file is part of ruri, with ABSOLUTELY NO WARRANTY.
+#
+# MIT License
+# Copyright (c) 2025 Moe-hacker
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+error() {
+  printf "\033[?1049l"
+  printf "\033[?25h"
+  printf "\033[31mError: %s\033[0m\n" "$1"
+  exit 1
+}
+UNAME_ARCH=$(uname -m)
+case ${UNAME_ARCH} in
+armv7* | armv8l) CPU_ARCH="armhf" ;;
+armv[1-6]*) CPU_ARCH="armv7" ;;
+aarch64 | armv8* | arm64 | arm*) CPU_ARCH="aarch64" ;;
+x86_64 | amd64) CPU_ARCH="x86_64" ;;
+i*86 | x86) CPU_ARCH="i386" ;;
+risc*) CPU_ARCH="riscv64" ;;
+s390*) ARCH_TYPE="s390x" ;;
+ppc*) ARCH_TYPE="ppc64le" ;;
+loong*) ARCH_TYPE="loongarch64" ;;
+*) CPU_ARCH="" ;;
+esac
+if [ -z "${CPU_ARCH}" ]; then
+  error "Cannot detect CPU architecture"
+fi
+URL="https://github.com/Moe-hacker/ruri/releases/latest/download/${CPU_ARCH}.tar"
+DIR="$(pwd)"
+fallback() {
+  cd "$DIR" || exit 1
+  printf "\033[?1049l"
+  printf "\033[?25h"
+  echo "Fallback mode..."
+  if !command -v wget >/dev/null 2>&1; then
+    curl -L "$URL" -o ruri.tar
+    if [ $? -ne 0 ]; then
+      error "Download failed!"
+    fi
+  else
+    wget -q --show-progress --progress=dot "$URL" -O ruri.tar
+  fi
+  if [ ! -f ruri.tar ]; then
+    error "Download failed!"
+  fi
+  tar -xf ruri.tar
+  rm -f ruri.tar
+  rm -f LICENSE
+  chmod +x ruri
+  echo "Download complete!"
+  echo "ruri ${CPU_ARCH} has been downloaded successfully to $(pwd)/ruri"
+  exit 0
+}
+if [ "x$1" = "x-s" ]; then
+  fallback
+fi
+if [ -z "$TMPDIR" ]; then
+  TMPDIR="/tmp"
+fi
+cd $TMPDIR || fallback
+rm -rf ruri_temp || true
+mkdir ruri_temp || fallback
+cd ruri_temp || fallback
+tty_out() {
+  for i in $(seq 1 ${#2}); do
+    printf "$(printf "$2" | cut -c $i)"
+    sleep $1
+  done
+  echo
+}
+ruri_logo1="                _-###-_                "
+ruri_logo2="             _##  ***  ##_             "
+ruri_logo3="          _##    * * *    ##_          "
+ruri_logo4="       ###       * * *       ###       "
+ruri_logo5="     ##          * * *          ##     "
+ruri_logo6="   #**** _       * * *       _ ****#   "
+ruri_logo7="   # * *_ **__   * * *   __**_ * * #   "
+ruri_logo8="   #   * _**_ *_ * * * _* _**_ *   #   "
+ruri_logo9="   #      **_*  * *** *  *_**      #   "
+ruri_logo10="   #          ****+++****          #   "
+ruri_logo11="   #      **\`*  * *** *  *\`**      #   "
+ruri_logo12="   #   * \`**\` *\` * * * \`* \`**\` *   #   "
+ruri_logo13="   # * *\` **\`\`   * * *   \`\`**\` * * #   "
+ruri_logo14="   #**** \`       * * *       \` ****#   "
+ruri_logo15="     ##          * * *          ##     "
+ruri_logo16="       ###       * * *       ###       "
+ruri_logo17="         \`##     * * *     ##\`         "
+ruri_logo18="           \`##    ***    ##\`           "
+ruri_logo19="              \`\`\`-###-\`\`\`              "
+export S=$(stty size | awk '{print $2}')
+export S=$((S / 2 - 19))
+init_logo() {
+  printf "\033[?1049h"
+  printf "\033[?25l"
+  clear
+  for i in $(seq 1 19); do
+    for j in $(seq 1 $S); do printf " "; done
+    eval echo \"\${ruri_logo$i}\"
+  done
+  printf "\033[0H"
+}
+update_logo() {
+  L=$((19 * $1 / 100))
+  if [ x"$L_BK" = x"" ]; then
+    L_BK=0
+  fi
+  printf "\033[38;2;254;228;208m"
+  while [ $L -gt $L_BK ]; do
+    for j in $(seq 1 $S); do printf " "; done
+    L_BK=$((L_BK + 1))
+    eval echo \"\${ruri_logo$L_BK}\"
+  done
+  export L_BK=$L
+}
+init_logo
+tmpfile=$(mktemp)
+if [ ! -f "$tmpfile" ]; then
+  fallback
+fi
+wget -q --show-progress --progress=dot "$URL" -O ruri.tar 2>&1 | stdbuf -oL grep "%" | stdbuf -oL sed 's/.* \([0-9.]*%\).*/\1/' | stdbuf -oL cut -d "%" -f 1 | while read -r percent; do
+  update_logo $percent
+  echo $percent >"$tmpfile"
+done
+percent=$(cat "$tmpfile")
+rm -f "$tmpfile"
+if [ "$percent" = "100" ]; then
+  tar -xf ruri.tar
+  rm -f ruri.tar
+  printf "\033[0m"
+  echo "Download complete!"
+else
+  printf "\033[31m"
+  fallback
+fi
+chmod +x ruri
+rm -f LICENSE
+printf "\033[38;2;254;228;208mruri ${CPU_ARCH} has been downloaded successfully to $(pwd)/ruri\n\n"
+read -p "Do you want to install ruri to $PREFIX/bin? [y/n]: " INSTALL
+if [ x"${INSTALL}" = "xy" ]; then
+  sudo mv ruri $PREFIX/bin/ || mv ruri $PREFIX/bin/
+  if [ $? != 0 ]; then
+    error "Failed to install ruri"
+  fi
+  echo "ruri has been installed to $PREFIX/bin"
+fi
+clear
+printf "\033[38;2;254;228;208m"
+printf "\n\n\n\n"
+tty_out 0.03 "Let's take a short tour of ruri!\n"
+printf "\n"
+sleep 1
+tty_out 0.03 "First, you have a rootfs in ./rootfs"
+printf "\n"
+tty_out 0.03 "You can just run:\n"
+printf "\n"
+tty_out 0.03 "ruri ./rootfs\n"
+printf "\n"
+tty_out 0.03 "If your device does not support rootless containers, you can run with sudo:\n"
+printf "\n"
+tty_out 0.03 "sudo ruri ./rootfs\n"
+printf "\n"
+tty_out 0.03 "And, after all, umount the container with:\n"
+printf "\n"
+tty_out 0.03 "ruri -U ./rootfs\n"
+printf "\n"
+tty_out 0.03 "Don't know how to get a rootfs? Try our rurima tool!\n"
+tty_out 0.03 "https://github.com/rurioss/rurima\n"
+printf "\n"
+sleep 10
+printf "\033[?1049l"
+printf "\033[?25h"
+printf "\033[0m"
