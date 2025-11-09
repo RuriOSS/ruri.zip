@@ -1,0 +1,1 @@
+This is the site code of ruri.

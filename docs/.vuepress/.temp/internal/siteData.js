@@ -1,4 +1,4 @@
-export const siteData = JSON.parse("{\"base\":\"/\",\"lang\":\"en-US\",\"title\":\"\",\"description\":\"「 须臾水面明月出，沧江万顷琉璃寒 」\",\"head\":[],\"locales\":{}}")
+export const siteData = JSON.parse("{\"base\":\"/\",\"lang\":\"en-US\",\"title\":\"\",\"description\":\"\",\"head\":[],\"locales\":{\"/\":{\"lang\":\"en-US\",\"title\":\"Ruri\",\"description\":\"「 须臾水面明月出，沧江万顷琉璃寒 」\"},\"/zh/\":{\"lang\":\"zh-CN\",\"title\":\"琉璃\",\"description\":\"「 须臾水面明月出，沧江万顷琉璃寒 」\"}}}")
 
 if (import.meta.webpackHot) {
   import.meta.webpackHot.accept()
