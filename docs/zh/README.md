@@ -15,7 +15,7 @@ actions:
   
 
 
-footer: MIT 许可 | 版权所有 (c) 2022-2025 RuriOSS
+footer: MIT 许可 | 版权所有 (c) 2022-至今 RuriOSS
 ---
 
 ## 亮点
