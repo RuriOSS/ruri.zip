@@ -15,7 +15,7 @@ actions:
   
 
 
-footer: MIT Licensed | Copyright (c) 2022-2025 RuriOSS
+footer: MIT Licensed | Copyright (c) 2022-present RuriOSS
 ---
 
 ## Highlights
