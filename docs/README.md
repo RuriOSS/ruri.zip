@@ -1,7 +1,7 @@
 ---
 home: true
 title: Ruri - Lightweight, User-friendly Linux-container Implementation
-tagline: A zipped📦 Linux container runtime that zips🚀
+tagline: A zipped 📦 Linux container runtime that zips 🚀
 heroImage: /images/logo.png
 heroText: ruri
 
@@ -15,7 +15,7 @@ actions:
   
 
 
-footer: MIT Licensed | Copyright (c) 2022-present RuriOSS
+footer: MIT Licensed | Copyright (c) 2022-2026 RuriOSS
 ---
 
 ## Highlights
@@ -33,7 +33,7 @@ footer: MIT Licensed | Copyright (c) 2022-present RuriOSS
   - Very small binary size (even <200k with upx), yet over 30 options.
 
 - **Flexible & Cross-platform**
-  - Runs on rooted Android, IoT, amd64, s390x, and more, just needs root.
+  - Runs on rooted Android, IoT, amd64, s390x, and more architectures/platforms, just needs root.
 
 - **Secure by Design**
   - Rootless containers, security options, and read-only filesystem support.
