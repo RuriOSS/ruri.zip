@@ -1,7 +1,7 @@
 ---
 home: true
-title: Ruri - 轻量级、用户友好的 Linux 容器实现
-tagline: 一个压缩的📦 Linux 容器实现，速度飞快🚀
+title: Ruri - 轻量级、不限环境、用户友好的 Linux 容器实现
+tagline: 一个紧凑的 📦 Linux 容器实现，速度飞快 🚀
 heroImage: /images/logo.png
 heroText: ruri
 
@@ -15,28 +15,28 @@ actions:
   
 
 
-footer: MIT 许可 | 版权所有 (c) 2022-至今 RuriOSS
+footer: MIT 许可 | 版权所有 (c) 2022-2026 RuriOSS
 ---
 
 ## 亮点
 
 - **功能强劲，爽！**
-  - 支持 chroot、带 pivot_root 的 unshare、能力控制、cgroups、no_new_privs、环境/用户/工作目录设置、seccomp 等。
-  - 内置 binfmt_misc & QEMU，支持轻松实现多架构容器。
-  - 非root模式 (需要user space支持)。
+  - 支持 chroot、带 pivot_root 的 unshare、权能限制、cgroups、no_new_privs、环境/用户/工作目录设置、seccomp 等。
+  - 内置 binfmt_misc & QEMU，轻松实现多架构容器。
+  - 非特权容器 (需要用户命名空间支持)。
   - 灵活的挂载选项：支持挂载镜像/分区，同时可将挂载点设置为只读或读写。
-  - 使用k2v格式进行配置
+  - 配置文件支持（使用 k2v 格式）
 
 - **超轻量和零依赖**
-  - 在无root模式下仅依赖 `uidmap` ；其他所有功能均为内置。
+  - 在非特权模式下仅依赖 `uidmap` ；其他所有功能均为内置。
   - 提供多种架构的静态链接二进制文件。
   - 在二进制文件体积极小的同时拥有超过 30 个参数可选（使用 upx 压缩本体后甚至小于 200k）。
 
 - **跨平台**
-  - 可在 Android、IoT、amd64、s390x 等平台上运行。（需 root 权限）
+  - 可在 aarch64、amd64、s390x 等架构和 Android、常规/嵌入 Linux 等平台上运行。（需 root 权限）
 
 - **设计安全**
-  - 支持无root容器、安全选项以及只读文件系统。
+  - 支持非特权容器、特殊安全限制以及只读文件系统。
 
 - **用法简单**
   - 直接替代 `chroot`；无需掌握所有选项即可轻松上手。
@@ -46,14 +46,14 @@ footer: MIT 许可 | 版权所有 (c) 2022-至今 RuriOSS
   </p>
 
 ## 关于我们：
-&emsp;不要问“为什么不用 Docker”，而是“什么时候不能用 Docker”。    
-&emsp;ruri 的发音是 `luli`，你也可以用中文或日文称之为 `[瑠璃/琉璃]` ~~(るり)~~。    
+&emsp;这不是一个“为什么不用 Docker”的问题，而是一个“不能用 Docker 的时候怎么办”的问题。    
+&emsp;ruri 的发音是 `luli`，你也可以用汉语或日语称之为 `[瑠璃/琉璃]` ~~(るり)~~。    
 &emsp;ruri 是 Lightweight, User-friendly Linux-container Implementation 的缩写。    
 &emsp;ruri 是一个强大的容器实现，几乎可在任何 Linux 设备上运行，即便内核配置不完整或存储空间有限。    
 
 ## 获取 ruri
 
-你可以在 [Release](https://github.com/Moe-hacker/ruri/releases/) 中下载适用于 arm64、armv7、armhf、riscv64、i386、loong64、s390x、ppc64le 或 x86_64 等架构的 ruri 可执行文件（static build）。
+你可以在 [Release](https://github.com/Moe-hacker/ruri/releases/) 中下载适用于 arm64、armv7、armhf、riscv64、i386、loong64、s390x、ppc64le 或 x86_64 等架构的 ruri 静态可执行文件。
 你也可以选择运行以下命令获取 ruri：
 
 ```sh
@@ -98,4 +98,4 @@ Ruri 提供静态链接的二进制文件，但若想自行构建，请参阅 [B
 ---
 
 **注意**：本文档尚未完全翻译。欢迎贡献翻译！  
-**提示**：本翻译由 Grok（xAI）大模型提供。
+**提示**：本翻译部分由 Grok（xAI）大模型提供。
