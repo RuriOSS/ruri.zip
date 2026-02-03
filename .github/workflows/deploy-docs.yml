@@ -2,6 +2,7 @@
 name: 部署文档
 
 on:
+  workflow_dispatch:
   push:
     branches:
       # 确保这是你正在使用的分支名称
