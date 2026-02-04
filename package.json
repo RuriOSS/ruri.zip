@@ -13,6 +13,7 @@
   "devDependencies": {
     "@vuepress/bundler-webpack": "2.0.0-rc.20",
     "@vuepress/theme-default": "2.0.0-rc.88",
+    "baseline-browser-mapping": "^2.9.14",
     "sass-embedded": "^1.86.0",
     "sass-loader": "^16.0.5",
     "vue": "^3.5.13",
