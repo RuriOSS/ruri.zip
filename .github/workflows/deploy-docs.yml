@@ -2,6 +2,7 @@
 name: 部署文档
 
 on:
+  workflow_dispatch:
   push:
     branches:
       # 确保这是你正在使用的分支名称
@@ -26,7 +27,6 @@ jobs:
         with: 
            version: 10.16.0
 
-
       - name: 设置 Node.js
         uses: actions/setup-node@v4
         with:
@@ -34,15 +34,15 @@ jobs:
           cache: pnpm
 
       - name: 安装依赖
-        run:
-          pnpm install --no-frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: 构建文档
         env:
           NODE_OPTIONS: --max_old_space_size=8192
-        run: |-
-          pnpm run docs:build
-          > docs/.vuepress/dist/.nojekyll
+        run: |
+          pnpm run build
+          touch docs/.vuepress/dist/.nojekyll
+
       - name: 准备静态文件
         run: |
           cp temp/* docs/.vuepress/dist/
